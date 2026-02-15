@@ -489,16 +489,35 @@ typedef struct character_point_instant
 
 // @fixme199 BEGIN
 struct PlayerSlotT {
-	std::array<LPITEM,INVENTORY_AND_EQUIP_SLOT_MAX> pItems;
-	std::array<BYTE,INVENTORY_AND_EQUIP_SLOT_MAX> bItemGrid;
-	std::array<LPITEM,DRAGON_SOUL_INVENTORY_MAX_NUM> pDSItems;
-	std::array<WORD,DRAGON_SOUL_INVENTORY_MAX_NUM> wDSItemGrid;
-	std::array<LPITEM,CUBE_MAX_NUM> pCubeItems;
+	// Temel envanter
+	std::array<LPITEM, INVENTORY_AND_EQUIP_SLOT_MAX> pItems;
+	std::array<BYTE, INVENTORY_AND_EQUIP_SLOT_MAX> bItemGrid;
+	
+	// Dragon Soul envanter
+	std::array<LPITEM, DRAGON_SOUL_INVENTORY_MAX_NUM> pDSItems;
+	std::array<WORD, DRAGON_SOUL_INVENTORY_MAX_NUM> wDSItemGrid;
+	
+	// Cube envanter
+	std::array<LPITEM, CUBE_MAX_NUM> pCubeItems;
+	
 #ifdef ENABLE_ACCE_COSTUME_SYSTEM
-	std::array<TItemPosEx,ACCE_WINDOW_MAX_MATERIALS> pAcceMaterials;
+	std::array<TItemPosEx, ACCE_WINDOW_MAX_MATERIALS> pAcceMaterials;
 #endif
-	std::array<TQuickslot,QUICKSLOT_MAX_NUM> pQuickslot;
+
+	// Quickslot
+	std::array<TQuickslot, QUICKSLOT_MAX_NUM> pQuickslot;
+
+#ifdef ENABLE_SPLIT_INVENTORY_SYSTEM
+	// K Envanter - 6 farklı envanter türü
+	std::array<LPITEM, SKILLBOOK_INVENTORY_MAX_NUM> pSkillBookItems;
+	std::array<LPITEM, UPGRADE_ITEMS_INVENTORY_MAX_NUM> pUpgradeItems;  
+	std::array<LPITEM, STONE_INVENTORY_MAX_NUM> pStoneItems;
+	std::array<LPITEM, BOX_INVENTORY_MAX_NUM> pBoxItems;
+	std::array<LPITEM, EFSUN_INVENTORY_MAX_NUM> pEfsunItems;
+	std::array<LPITEM, CICEK_INVENTORY_MAX_NUM> pCicekItems;
+#endif
 };
+
 // @fixme199 END
 
 #define TRIGGERPARAM		LPCHARACTER ch, LPCHARACTER causer
@@ -1185,6 +1204,14 @@ class CHARACTER : public CEntity, public CFSM, public CHorseRider
 #endif
 		LPITEM			GetItem(TItemPos Cell) const;
 		LPITEM			GetInventoryItem(WORD wCell) const;
+#ifdef ENABLE_SPLIT_INVENTORY_SYSTEM
+	LPITEM			GetSkillBookInventoryItem(WORD wCell) const;
+	LPITEM			GetUpgradeItemsInventoryItem(WORD wCell) const;
+	LPITEM			GetStoneInventoryItem(WORD wCell) const;
+	LPITEM			GetBoxInventoryItem(WORD wCell) const;
+	LPITEM			GetEfsunInventoryItem(WORD wCell) const;
+	LPITEM			GetCicekInventoryItem(WORD wCell) const;
+#endif
 		bool			IsEmptyItemGrid(TItemPos Cell, BYTE size, int iExceptionCell = -1) const;
 
 		void			SetWear(BYTE bCell, LPITEM item);
@@ -1251,6 +1278,14 @@ class CHARACTER : public CEntity, public CFSM, public CHorseRider
 		int				GetEmptyInventoryEx(LPITEM item);
 
 		int				GetEmptyInventory(BYTE size) const;
+#ifdef ENABLE_SPLIT_INVENTORY_SYSTEM
+		int				GetEmptySkillBookInventory(BYTE size) const;
+		int				GetEmptyUpgradeItemsInventory(BYTE size) const;
+		int				GetEmptyStoneInventory(BYTE size) const;
+		int				GetEmptyBoxInventory(BYTE size) const;
+		int				GetEmptyEfsunInventory(BYTE size) const;
+		int				GetEmptyCicekInventory(BYTE size) const;
+#endif
 		int				GetEmptyDragonSoulInventory(LPITEM pItem) const;
 		void			CopyDragonSoulItemGrid(std::vector<WORD>& vDragonSoulItemGrid) const;
 
